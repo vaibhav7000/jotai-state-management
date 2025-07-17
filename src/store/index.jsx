@@ -37,6 +37,20 @@ const textAtomCapitalized = atom((get) => {
   return get(textAtom).toUpperCase();
 });
 
+const firstNameAtom = atom("Vaibhav");
+const lastNameAtom = atom("Chawla");
+
+// read-write-atom (derieved-atom) -> the value is setup based on the main atom and we can change the main atom value using the write method (set) 
+const fullNameAtom = atom((get) => {
+  return `${get(firstNameAtom)} ${get(lastNameAtom)}`;
+}, (get, set, upatedValue) => {
+  const [first, last] = upatedValue.split(" ");
+
+  set(firstNameAtom, first);
+  set(lastNameAtom, last);
+})
+
+
 export {
   priceAtom,
   doublePriceAtom,
@@ -45,8 +59,16 @@ export {
   progressAnimeAtom,
   textAtom,
   textAtomCapitalized,
+  fullNameAtom,
+  firstNameAtom, lastNameAtom
 };
 
 // jotai -> state-management library that is used to create global state-variables and the components can directly use the globally declared state-variables and when ever the value of the global state-variables changes all the components that are mounted automatically gets updated.
 
 // using "atoms" we declare global state-variables
+
+
+// Derived atoms -> atoms whose values are setted / derived up based on the values of other atoms. The values of these atoms are dependent on other and hence once the main atoms changes, the derieved atom also gets changed. 
+// There are three types of derieved-atoms :- read-only, write-only and read-write-atom
+
+// we have 

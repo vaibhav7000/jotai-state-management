@@ -7,7 +7,10 @@ import {
   progressAnimeAtom,
   textAtom,
   textAtomCapitalized,
+  fullNameAtom,
+  firstNameAtom, lastNameAtom
 } from './store/index.jsx';
+import { useRef } from 'react';
 
 function App() {
   const [price, setPrice] = useAtom(priceAtom);
@@ -17,6 +20,12 @@ function App() {
   const progress = useAtomValue(progressAnimeAtom);
   const [text, setText] = useAtom(textAtom);
   const textCapital = useAtomValue(textAtomCapitalized);
+
+  const [fullName, setFullName] = useAtom(fullNameAtom);
+  const firstName = useAtomValue(firstNameAtom);
+  const lastName = useAtomValue(lastNameAtom);
+
+  const changeName = useRef();
 
   return (
     <div
@@ -100,6 +109,18 @@ function App() {
             }}
           />
           <div>{textCapital}</div>
+        </div>
+
+        <div style={{
+            marginTop: '50px',
+        }}>`
+          <input ref={changeName} type="text"  placeholder='Change fullname' />
+          <button onClick={() => {
+            setFullName(changeName.current.value);
+          }}>
+            Change FullName
+          </button>
+          <div>{`${firstName} ${lastName}`}</div>
         </div>
       </div>
     </div>
