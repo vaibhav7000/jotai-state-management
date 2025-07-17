@@ -33,6 +33,15 @@ const progressAnimeAtom = atom((get) => {
 
 const textAtom = atom('Hello');
 
+// this will be called after the component mounts and will be called where its value is used using useAtom and useAtomValue
+textAtom.onMount = (setAtom) => {
+  setAtom("HELLO WORLd !!");
+  // this will be called when component will unmount and here we can update its value again
+  return () => {
+    console.log("hello")
+  }
+}
+
 const textAtomCapitalized = atom((get) => {
   return get(textAtom).toUpperCase();
 });
@@ -60,8 +69,28 @@ export {
   textAtom,
   textAtomCapitalized,
   fullNameAtom,
-  firstNameAtom, lastNameAtom
+  firstNameAtom, lastNameAtom,
+  userIdAtom, usernameAtom
 };
+
+
+const userIdAtom = atom(1);
+
+const usernameAtom = atom(async (get, {signal}) => {
+  const userId = get(userIdAtom);
+  console.log(signal);
+  try {
+    const response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}?_delay=2000`, {
+      signal
+    })
+
+    const output = await response.json();
+
+    return output;
+  } catch (error) {
+    return "Internal Server error"
+  }
+})
 
 // jotai -> state-management library that is used to create global state-variables and the components can directly use the globally declared state-variables and when ever the value of the global state-variables changes all the components that are mounted automatically gets updated.
 
